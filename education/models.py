@@ -8,3 +8,5 @@ class Education(models.Model):
 
     def __str__(self):
         return f"{self.degree} - {self.institute}"
+    
+
