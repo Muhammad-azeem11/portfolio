@@ -18,10 +18,12 @@ SECRET_KEY = os.environ.get(
 # DEBUG: True locally by default. Railway will set DJANGO_DEBUG=False
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.environ.get(
-    'DJANGO_ALLOWED_HOSTS',
-    'localhost,127.0.0.1' # No .railway.app here for local
-).split(',')
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "MuhammadAzeem1.pythonanywhere.com",
+    "muhammadazeem1.pythonanywhere.com",
+]
 
 # Only add https CSRF for production hosts
 CSRF_TRUSTED_ORIGINS = []
