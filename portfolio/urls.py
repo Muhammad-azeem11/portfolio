@@ -13,7 +13,7 @@ admin.site.index_title = settings.ADMIN_INDEX_TITLE
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('core.urls')),
+    path('', include('bio.urls')),
     path('bio/', include('bio.urls')),
     path('education/', include('education.urls')),
     path('skills/', include('skills.urls')),

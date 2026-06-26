@@ -5,46 +5,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body { font-family: Arial, sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; }
-        h1 { color: #333; }
-        .section { margin-bottom: 40px; }
-        .card { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+    body { font-family: Segoe UI, Arial, sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; background: #f5f7fa; color: #222; }
+    h1 { color: #1a1a1a; margin-bottom: 5px; }
+    h2 { border-bottom: 2px solid #0077b5; padding-bottom: 5px; margin-top: 40px; }
+    .card { background: white; border: 1px solid #e0e0e0; padding: 15px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    img { border-radius: 50%; width: 150px; height: 150px; object-fit: cover; border: 4px solid #0077b5; }
+    a { color: #0077b5; font-weight: bold; }
     </style>
 </head>
 <body>
  <h1>{{ bio.name|default:"Portfolio" }}</h1>
-    <img src="{{ bio.image.url }}" alt="{{ bio.name }}" style="border-radius:50%; width:150px; height:150px; object-fit:cover;">
+    <img src="{{ bio.image.url }}" alt="{{ bio.name }}">
     <p>{{ bio.tagline|default:"" }}</p>
     <p>{{ bio.bio|default:"" }}</p>
     <p><strong>Location:</strong> {{ bio.location }}</p>
     <p><a href="{{ bio.linkedin }}" target="_blank">LinkedIn</a> | <a href="{{ bio.cv.url }}" download>Download CV</a></p>
-
-    <div class="section">
-        <h2>Skills</h2>
-        {% for skill in skills %}
-        <div class="card">{{ skill.name }} - {{ skill.level }}%</div>
-        {% endfor %}
-    </div>
-
-    <div class="section">
-        <h2>Experience</h2>
-        {% for exp in experience %}
-        <div class="card"><strong>{{ exp.position }}</strong> at {{ exp.company }}<br>{{ exp.description }}</div>
-        {% endfor %}
-    </div>
-
-    <div class="section">
-        <h2>Projects</h2>
-        {% for proj in projects %}
-        <div class="card"><strong>{{ proj.title }}</strong><br>{{ proj.description }}</div>
-        {% endfor %}
-    </div>
-
-    <div class="section">
-        <h2>Education</h2>
-        {% for edu in education %}
-        <div class="card">{{ edu.degree }} - {{ edu.institute }}</div>
-        {% endfor %}
-    </div>
+    <div class="section"><h2>Skills</h2>{% for skill in skills %}<div class="card">{{ skill.name }} - {{ skill.level }}%</div>{% endfor %}</div>
+    <div class="section"><h2>Experience</h2>{% for exp in experience %}<div class="card"><strong>{{ exp.position }}</strong> at {{ exp.company }}<br>{{ exp.description }}</div>{% endfor %}</div>
+    <div class="section"><h2>Projects</h2>{% for proj in projects %}<div class="card"><strong>{{ proj.title }}</strong><br>{{ proj.description }}</div>{% endfor %}</div>
+    <div class="section"><h2>Education</h2>{% for edu in education %}<div class="card">{{ edu.degree }} - {{ edu.institute }}</div>{% endfor %}</div>
 </body>
 </html>
