@@ -15,20 +15,24 @@ SECRET_KEY = os.environ.get(
     'django-insecure-CHANGE-THIS-KEY-BEFORE-DEPLOYING-TO-PRODUCTION-1234567890'
 )
 
+# DEBUG: True locally by default. Railway will set DJANGO_DEBUG=False
 DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = os.environ.get(
     'DJANGO_ALLOWED_HOSTS',
-    'localhost,127.0.0.1'
+    'localhost,127.0.0.1' # No .railway.app here for local
 ).split(',')
 
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
-
-CSRF_TRUSTED_ORIGINS = [
-    f'https://{host}' for host in ALLOWED_HOSTS if host not in ('localhost', '127.0.0.1', '*')
-]
+# Only add https CSRF for production hosts
+CSRF_TRUSTED_ORIGINS = []
+if not DEBUG:
+    CSRF_TRUSTED_ORIGINS = [
+        'https://.railway.app',
+    ]
+    RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+    if RENDER_EXTERNAL_HOSTNAME:
+        ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+        CSRF_TRUSTED_ORIGINS.append(f'https://{RENDER_EXTERNAL_HOSTNAME}')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -47,10 +51,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-        
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # Only 1 time
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -129,8 +131,9 @@ ADMIN_SITE_HEADER = "Portfolio Administration"
 ADMIN_SITE_TITLE = "Portfolio Admin"
 ADMIN_INDEX_TITLE = "Manage Portfolio Content"
 
+# SECURITY: Only turn these on in Production when DEBUG=False
 if not DEBUG:
-    SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', 'True') == 'True'
+    SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
@@ -139,5 +142,3 @@ if not DEBUG:
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
-    STATIC_ROOT = BASE_DIR / 'staticfiles'
-    
