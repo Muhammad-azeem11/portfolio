@@ -1,29 +1,109 @@
-<script src="https://cdn.tailwindcss.com"></script>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>{{ bio.name|default:"My Portfolio" }}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-    body { font-family: Segoe UI, Arial, sans-serif; max-width: 900px; margin: 40px auto; padding: 20px; background: #f5f7fa; color: #222; }
-    h1 { color: #1a1a1a; margin-bottom: 5px; }
-    h2 { border-bottom: 2px solid #0077b5; padding-bottom: 5px; margin-top: 40px; }
-    .card { background: white; border: 1px solid #e0e0e0; padding: 15px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-    img { border-radius: 50%; width: 150px; height: 150px; object-fit: cover; border: 4px solid #0077b5; }
-    a { color: #0077b5; font-weight: bold; }
+    body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
     </style>
 </head>
-<body>
- <h1>{{ bio.name|default:"Portfolio" }}</h1>
-    <img src="{{ bio.image.url }}" alt="{{ bio.name }}">
-    <p>{{ bio.tagline|default:"" }}</p>
-    <p>{{ bio.bio|default:"" }}</p>
-    <p><strong>Location:</strong> {{ bio.location }}</p>
-    <p><a href="{{ bio.linkedin }}" target="_blank">LinkedIn</a> | <a href="{{ bio.cv.url }}" download>Download CV</a></p>
-    <div class="section"><h2>Skills</h2>{% for skill in skills %}<div class="card">{{ skill.name }} - {{ skill.level }}%</div>{% endfor %}</div>
-    <div class="section"><h2>Experience</h2>{% for exp in experience %}<div class="card"><strong>{{ exp.position }}</strong> at {{ exp.company }}<br>{{ exp.description }}</div>{% endfor %}</div>
-    <div class="section"><h2>Projects</h2>{% for proj in projects %}<div class="card"><strong>{{ proj.title }}</strong><br>{{ proj.description }}</div>{% endfor %}</div>
-    <div class="section"><h2>Education</h2>{% for edu in education %}<div class="card">{{ edu.degree }} - {{ edu.institute }}</div>{% endfor %}</div>
+<body class="bg-slate-900 text-slate-200">
+
+    <!-- NAVBAR MENU - Like your friend's site -->
+    <nav class="sticky top-0 z-50 bg-slate-950/90 backdrop-blur border-b border-slate-700">
+        <div class="max-w-4xl mx-auto px-6 py-3 flex justify-end space-x-6">
+            <a href="#bio" class="text-slate-300 hover:text-sky-400 font-semibold">Bio</a>
+            <a href="#skills" class="text-slate-300 hover:text-sky-400 font-semibold">Skills</a>
+            <a href="#experience" class="text-slate-300 hover:text-sky-400 font-semibold">Experience</a>
+            <a href="#projects" class="text-slate-300 hover:text-sky-400 font-semibold">Projects</a>
+            <a href="#education" class="text-slate-300 hover:text-sky-400 font-semibold">Education</a>
+        </div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto px-6 py-16">
+
+        <!-- HERO / BIO -->
+        <section id="bio" class="text-center mb-16">
+            <img src="{{ bio.image.url }}" alt="{{ bio.name }}" class="w-40 h-40 rounded-full object-cover border-4 border-sky-400 shadow-lg mx-auto mb-6">
+            <h1 class="text-5xl font-bold tracking-tight mb-3 text-white">{{ bio.name|default:"Portfolio" }}</h1>
+            <p class="text-xl text-slate-400 mb-2">{{ bio.tagline|default:"" }}</p>
+            <p class="max-w-2xl mx-auto text-slate-300 mb-4">{{ bio.bio|default:"" }}</p>
+            <div class="space-x-4">
+                <a href="{{ bio.linkedin }}" target="_blank" class="text-sky-400 font-semibold hover:underline">LinkedIn</a> 
+                <span class="text-slate-600">|</span>
+                <a href="{{ bio.cv.url }}" download class="text-sky-400 font-semibold hover:underline">Download CV</a>
+            </div>
+        </section>
+
+        <!-- SKILLS -->
+        <section id="skills" class="mb-16">
+            <h2 class="text-3xl font-bold border-b border-slate-700 pb-3 mb-6 text-white">Skills</h2>
+            <div class="grid sm:grid-cols-2 gap-4">
+                {% for skill in skills %}
+                <div class="bg-slate-800 p-4 rounded-xl shadow-sm border-slate-700">{{ skill.name }} - {{ skill.level }}%</div>
+                {% empty %}
+                <p class="text-slate-400">Add skills in /admin</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- EXPERIENCE -->
+        <section id="experience" class="mb-16">
+            <h2 class="text-3xl font-bold border-b border-slate-700 pb-3 mb-6 text-white">Experience</h2>
+            <div class="space-y-4">
+                {% for exp in experience %}
+                <div class="bg-slate-800 p-5 rounded-xl shadow-sm border-slate-700">
+                    <strong class="text-lg text-white">{{ exp.position }}</strong> at {{ exp.company }}<br>
+                    <p class="text-slate-300 mt-2">{{ exp.description }}</p>
+                </div>
+                {% empty %}
+                <p class="text-slate-400">Add experience in /admin</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- PROJECTS -->
+        <section id="projects" class="mb-16">
+            <h2 class="text-3xl font-bold border-b border-slate-700 pb-3 mb-6 text-white">Projects</h2>
+            <div class="space-y-4">
+                {% for proj in projects %}
+                <div class="bg-slate-800 p-5 rounded-xl shadow-sm border-slate-700">
+                    <strong class="text-lg text-white">{{ proj.title }}</strong><br>
+                    <p class="text-slate-300 mt-2">{{ proj.description }}</p>
+                </div>
+                {% empty %}
+                <p class="text-slate-400">Add projects in /admin</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- EDUCATION -->
+        <section id="education" class="mb-20">
+            <h2 class="text-3xl font-bold border-b border-slate-700 pb-3 mb-6 text-white">Education</h2>
+            <div class="space-y-4">
+                {% for edu in education %}
+                <div class="bg-slate-800 p-5 rounded-xl shadow-sm border-slate-700">{{ edu.degree }} - {{ edu.institute }}</div>
+                {% empty %}
+                <p class="text-slate-400">Add education in /admin</p>
+                {% endfor %}
+            </div>
+        </section>
+
+    </div>
+
+    <!-- CONTACT FOOTER -->
+    <footer class="border-t border-slate-700 pt-12 pb-16 text-center">
+        <h3 class="text-2xl font-bold text-white mb-4">Get In Touch</h3>
+        <div class="space-y-2 text-slate-300">
+            <p><strong>Phone:</strong> {{ bio.phone|default:"Add phone in /admin" }}</p>
+            <p><strong>Location:</strong> {{ bio.location|default:"Add location in /admin" }}</p>
+            <p><strong>Address:</strong> {{ bio.address|default:"Add address in /admin" }}</p>
+        </div>
+        <p class="text-slate-500 text-sm mt-8">© {{ bio.name }}. All Rights Reserved.</p>
+    </footer>
+
 </body>
 </html>
