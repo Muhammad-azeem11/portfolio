@@ -12,9 +12,12 @@
     </style>
 </head>
 <body>
-    <h1>{{ bio.name|default:"Portfolio" }}</h1>
-    <p>{{ bio.title|default:"" }}</p>
-    <p>{{ bio.about|default:"" }}</p>
+ <h1>{{ bio.name|default:"Portfolio" }}</h1>
+    <img src="{{ bio.image.url }}" alt="{{ bio.name }}" style="border-radius:50%; width:150px; height:150px; object-fit:cover;">
+    <p>{{ bio.tagline|default:"" }}</p>
+    <p>{{ bio.bio|default:"" }}</p>
+    <p><strong>Location:</strong> {{ bio.location }}</p>
+    <p><a href="{{ bio.linkedin }}" target="_blank">LinkedIn</a> | <a href="{{ bio.cv.url }}" download>Download CV</a></p>
 
     <div class="section">
         <h2>Skills</h2>
